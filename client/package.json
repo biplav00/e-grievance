@@ -37,5 +37,8 @@
     "development": [
       "last 1 chrome version"
     ]
+  },
+  "devDependencies": {
+    "source-map-explorer": "^2.5.3"
   }
 }

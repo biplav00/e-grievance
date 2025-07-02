@@ -248,9 +248,14 @@ const GrievanceDetail = () => {
             style={{ background: "rgba(0,0,0,0.5)" }}
             onClick={() => setDialogImg(null)}
           >
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content p-2">
-                <img src={dialogImg} alt="full" className="img-fluid rounded" />
+            <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: "90vw", width: "60vw" }}>
+              <div className="modal-content p-2" style={{ background: "#222" }}>
+                <img
+                  src={dialogImg}
+                  alt="full"
+                  className="img-fluid rounded"
+                  style={{ width: "100%", maxHeight: "80vh", objectFit: "contain", background: "#222" }}
+                />
               </div>
             </div>
           </div>

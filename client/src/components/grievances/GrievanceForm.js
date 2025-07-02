@@ -1,40 +1,30 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import useDepartments from "../../hooks/useDepartments";
 
-const GrievanceForm = ({ 
-  onGrievanceSubmitted, 
-  initialData, 
-  isEditMode, 
-  grievanceId,
-  isDialog = false 
-}) => {
+const GrievanceForm = ({ onGrievanceSubmitted, initialData, isEditMode, grievanceId, isDialog = false }) => {
   const [formData, setFormData] = useState(() => {
     if (initialData) {
       return {
         category: initialData.category || "",
         department: initialData.department?._id || initialData.department || "",
         description: initialData.description || "",
-        address: initialData.address || ""
+        address: initialData.address || "",
       };
     }
-    return { 
-      category: "", 
-      department: "", 
-      description: "", 
-      address: "" 
+    return {
+      category: "",
+      department: "",
+      description: "",
+      address: "",
     };
   });
   const [photos, setPhotos] = useState([]);
   // Debug: log initialData to verify structure
-  console.log('GrievanceForm initialData:', initialData);
 
   const [previews, setPreviews] = useState(() => {
     if (isEditMode && initialData?.photos) {
-      return initialData.photos.map(photo =>
-        photo && photo.url ? photo.url : ''
-      );
+      return initialData.photos.map((photo) => (photo && photo.url ? photo.url : ""));
     }
     return [];
   });
@@ -42,11 +32,7 @@ const GrievanceForm = ({
   // Ensure previews update if initialData.photos changes (e.g., dialog opens after fetch)
   React.useEffect(() => {
     if (isEditMode && initialData?.photos) {
-      setPreviews(
-        initialData.photos.map(photo =>
-          photo && photo.url ? photo.url : ''
-        )
-      );
+      setPreviews(initialData.photos.map((photo) => (photo && photo.url ? photo.url : "")));
     }
   }, [isEditMode, initialData?.photos]);
   const [error, setError] = useState("");
@@ -78,7 +64,7 @@ const GrievanceForm = ({
     if (onGrievanceSubmitted) {
       onGrievanceSubmitted({
         ...formData,
-        photos
+        photos,
       });
     }
     // Reset form only for add mode
@@ -97,9 +83,7 @@ const GrievanceForm = ({
 
   return (
     <div className="p-2">
-      {!isDialog && (
-        <h2 className="mb-3">{isEditMode ? "Edit Grievance" : "Report a New Grievance"}</h2>
-      )}
+      {!isDialog && <h2 className="mb-3">{isEditMode ? "Edit Grievance" : "Report a New Grievance"}</h2>}
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
       <form id="grievance-form" onSubmit={onSubmit}>
@@ -156,38 +140,30 @@ const GrievanceForm = ({
         </div>
         <div className="mb-3">
           <label className="form-label">Photos</label>
-            <input
-              type="file"
-              name="photos"
-              onChange={onFileChange}
-              accept="image/*"
-              className="form-control"
-            />
-            <div className="d-flex gap-2 mt-2 flex-wrap">
-              {previews.length === 0 && (
-                <div className="text-muted">No photos attached</div>
-              )}
-              {previews.map((src, i) => (
-                src ? (
-                  <div key={i} className="position-relative">
-                    <img
-                      src={src}
-                      alt="preview"
-                      onClick={() => setDialogImg(src)}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        objectFit: "cover",
-                        cursor: "pointer",
-                        borderRadius: 4,
-                        border: "1px solid #ccc",
-                      }}
-                    />
-                  </div>
-                ) : null
-              ))}
-            </div>
+          <input type="file" name="photos" onChange={onFileChange} accept="image/*" className="form-control" />
+          <div className="d-flex gap-2 mt-2 flex-wrap">
+            {previews.length === 0 && <div className="text-muted">No photos attached</div>}
+            {previews.map((src, i) =>
+              src ? (
+                <div key={i} className="position-relative">
+                  <img
+                    src={src}
+                    alt="preview"
+                    onClick={() => setDialogImg(src)}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      objectFit: "cover",
+                      cursor: "pointer",
+                      borderRadius: 4,
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                </div>
+              ) : null
+            )}
           </div>
+        </div>
         {!isDialog && (
           <button type="submit" className="btn btn-primary w-100">
             {isEditMode ? "Save Changes" : "Submit"}

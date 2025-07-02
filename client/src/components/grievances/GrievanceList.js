@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect, useContext } from "react";
 import { FixedSizeList as List } from "react-window";
-import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 const GrievanceList = ({ grievances, title, onStatusChange, onViewDetail }) => {

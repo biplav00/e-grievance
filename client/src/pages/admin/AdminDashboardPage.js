@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {

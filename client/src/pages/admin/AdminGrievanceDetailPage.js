@@ -114,7 +114,13 @@ const AdminGrievanceDetailPage = () => {
                     border: "1px solid #ccc",
                     cursor: "pointer",
                   }}
-                  onClick={() => setPhotoDialog(`/uploads/${photo.replace(/^uploads\//, "")}`)}
+                  onClick={() =>
+                    setPhotoDialog(
+                      typeof photo === "string"
+                        ? `/uploads/${photo.replace(/^uploads[\\/]/, "")}`
+                        : photo.url
+                    )
+                  }
                 />
               ))}
             </div>
