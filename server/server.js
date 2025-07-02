@@ -14,7 +14,11 @@ mongoose.connect(mongoURI, {
 });
 
 // Init Middleware
-app.use(cors());
+app.use(
+  cors({
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json({ extended: false }));
 
 // Define Routes
