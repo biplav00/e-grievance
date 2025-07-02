@@ -21,7 +21,8 @@ const RegisterForm = () => {
       return;
     }
     try {
-      await axios.post("/api/auth/register", {
+      const api = require('../../api').default;
+      await api.post("/api/auth/register", {
         fullname: formData.fullname,
         email: formData.email,
         password: formData.password,

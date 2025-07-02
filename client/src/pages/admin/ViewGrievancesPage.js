@@ -14,7 +14,8 @@ const ViewGrievancesPage = () => {
   useEffect(() => {
     const fetchGrievances = async () => {
       try {
-        const res = await axios.get("/api/grievances"); // fetch all grievances
+        const api = require('../../api').default;
+        const res = await api.get("/api/grievances"); // fetch all grievances
         setGrievances(res.data);
       } catch (err) {
         console.error("Could not fetch grievances", err);

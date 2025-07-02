@@ -49,7 +49,8 @@ const AdminDashboardPage = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get("/api/grievances/stats");
+        const api = require('../../api').default;
+        const res = await api.get("/api/grievances/stats");
         setStats(res.data);
       } catch (err) {
         console.error("Could not fetch dashboard stats", err);

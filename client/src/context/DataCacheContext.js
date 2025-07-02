@@ -12,7 +12,8 @@ export function DataCacheProvider({ children, token }) {
     setLoading((l) => ({ ...l, departments: true }));
     try {
       const config = token ? { headers: { "x-auth-token": token } } : {};
-      const res = await axios.get("/api/department", config);
+      const api = require('../api').default;
+      const res = await api.get("/api/department", config);
       setDepartments(res.data);
       setError((e) => ({ ...e, departments: "" }));
     } catch {

@@ -14,7 +14,8 @@ const LoginForm = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", formData);
+      const api = require('../../api').default;
+      const res = await api.post("/api/auth/login", formData);
       login(res.data.token);
       navigate("/");
     } catch (err) {

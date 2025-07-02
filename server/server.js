@@ -1,13 +1,17 @@
 const express = require("express");
-const connectDB = require("./config/db");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require("path"); // Add this to the top
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
 
 // Connect Database
-connectDB();
+const mongoURI = process.env.MONGO_URI;
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Init Middleware
 app.use(cors());
@@ -17,11 +21,10 @@ app.use(express.json({ extended: false }));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/grievances", require("./routes/grievances"));
 app.use("/api/settings", require("./routes/settings"));
-// app.use("/api/category", require("./routes/category")); // Category management removed
 app.use("/api/department", require("./routes/department"));
 app.use("/api/admin", require("./routes/admin"));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Add this before app.listen
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 5001;
 

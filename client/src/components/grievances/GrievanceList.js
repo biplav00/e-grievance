@@ -25,7 +25,8 @@ const GrievanceList = ({ grievances, title, onStatusChange, onViewDetail }) => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const res = await axios.get("/api/department", {
+        const api = require('../../api').default;
+        const res = await api.get("/api/department", {
           headers: { "x-auth-token": auth.token }
         });
         setDepartments(res.data);
