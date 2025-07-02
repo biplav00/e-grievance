@@ -7,6 +7,10 @@ const Header = () => {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [emailDropdownOpen, setEmailDropdownOpen] = useState(false);
+  // Close email dropdown on auth or route change
+  React.useEffect(() => {
+    setEmailDropdownOpen(false);
+  }, [auth.isAuthenticated, auth.user, navigate]);
 
   const onLogout = (e) => {
     e.preventDefault();
@@ -116,36 +120,34 @@ const Header = () => {
           E-Grievance
         </Link>
         <nav className="navbar-nav ms-auto d-flex flex-row align-items-center gap-3">
-          {auth.isAuthenticated ? (
+          {auth.isAuthenticated && auth.user ? (
             <>
               {authLinks}
-              {auth.user && (
-                <div className="nav-item dropdown ms-3 position-relative" style={{ minWidth: 0 }}>
-                  <span
-                    onClick={handleEmailDropdownToggle}
-                    className="nav-link dropdown-toggle"
-                    role="button"
-                    aria-expanded={emailDropdownOpen}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="14" cy="14" r="14" fill="#e3eaf6" />
-                      <circle cx="14" cy="11" r="5" fill="#3498db" />
-                      <ellipse cx="14" cy="21" rx="7" ry="4" fill="#bcd2ee" />
-                    </svg>
-                  </span>
-                  <ul
-                    className={`dropdown-menu dropdown-menu-end w-auto${emailDropdownOpen ? " show" : ""}`}
-                    style={{ right: 0, left: "auto", minWidth: 120, maxWidth: 200 }}
-                  >
-                    <li>
-                      <button className="dropdown-item" onClick={onLogout}>
-                        Logout
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
+              <div className="nav-item dropdown ms-3 position-relative" style={{ minWidth: 0 }}>
+                <span
+                  onClick={handleEmailDropdownToggle}
+                  className="nav-link dropdown-toggle"
+                  role="button"
+                  aria-expanded={emailDropdownOpen}
+                  style={{ cursor: "pointer" }}
+                >
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="14" cy="14" r="14" fill="#e3eaf6" />
+                    <circle cx="14" cy="11" r="5" fill="#3498db" />
+                    <ellipse cx="14" cy="21" rx="7" ry="4" fill="#bcd2ee" />
+                  </svg>
+                </span>
+                <ul
+                  className={`dropdown-menu dropdown-menu-end w-auto${emailDropdownOpen ? " show" : ""}`}
+                  style={{ right: 0, left: "auto", minWidth: 120, maxWidth: 200 }}
+                >
+                  <li>
+                    <button className="dropdown-item" onClick={onLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </>
           ) : (
             <div className="d-flex gap-2">{guestLinks}</div>
