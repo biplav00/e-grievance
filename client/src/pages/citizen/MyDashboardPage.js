@@ -32,10 +32,12 @@ const MyDashboardPage = () => {
 
   return (
     <div className="container py-4">
-      <button className="btn btn-primary mb-3" onClick={() => navigate("/dashboard/add-grievance")}>
-        + Add New Grievance
-      </button>
-      <div className="card p-3 shadow">
+      <div className="d-flex justify-content-end">
+        <button className="btn btn-primary mb-3" onClick={() => navigate("/dashboard/add-grievance")}>
+          + Add New Grievance
+        </button>
+      </div>
+      <div>
         <GrievanceList
           grievances={myGrievances}
           title="My Submitted Grievances"

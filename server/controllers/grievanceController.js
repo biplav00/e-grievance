@@ -41,8 +41,7 @@ exports.createGrievance = [
 
 exports.getMyGrievances = async (req, res) => {
   try {
-    console.log("[getMyGrievances] req.user:", req.user);
-    if (!req.user || !req.user.id) {
+        if (!req.user || !req.user.id) {
       return res.status(401).json({ msg: "No user in request (auth failed)" });
     }
     const grievances = await Grievance.find({ submittedBy: req.user.id })
@@ -74,8 +73,7 @@ exports.updateGrievanceStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    console.log(`[updateGrievanceStatus] id: ${id}, status: ${status}, user:`, req.user);
-    if (!req.user) {
+        if (!req.user) {
       console.error("No user found in request. Headers:", req.headers);
       return res.status(401).json({ msg: "No user in request (auth failed)" });
     }
@@ -86,8 +84,7 @@ exports.updateGrievanceStatus = async (req, res) => {
     if (!grievance) return res.status(404).json({ msg: "Grievance not found" });
     grievance.status = status;
     await grievance.save();
-    console.log(`[updateGrievanceStatus] Updated grievance ${id} to status ${status}`);
-    res.json({ status });
+        res.json({ status });
   } catch (err) {
     console.error("ERROR in updateGrievanceStatus:", err);
     res.status(500).send("Server Error");
