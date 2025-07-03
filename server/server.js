@@ -13,8 +13,18 @@ mongoose.connect(mongoURI, {
   useUnifiedTopology: true,
 });
 
+// Enhanced CORS configuration
+const corsOptions = {
+  origin: process.env.CLIENT_URL || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
+};
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
 // Init Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ extended: false }));
 
 // Define Routes
