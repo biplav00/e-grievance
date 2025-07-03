@@ -14,7 +14,7 @@ const ViewGrievancesPage = () => {
   useEffect(() => {
     const fetchGrievances = async () => {
       try {
-        const api = require('../../api').default;
+        const api = require("../../api").default;
         const res = await api.get("/api/grievances"); // fetch all grievances
         setGrievances(res.data);
       } catch (err) {
@@ -35,7 +35,7 @@ const ViewGrievancesPage = () => {
 
   return (
     <div className="container py-4">
-      <div className="card p-3 shadow">
+      <div className="p-4">
         <GrievanceList
           grievances={grievances}
           title="All Grievances"

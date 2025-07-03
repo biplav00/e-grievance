@@ -60,25 +60,50 @@ const GrievanceForm = ({ onGrievanceSubmitted, initialData, isEditMode, grievanc
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // Always pass File object(s) to parent for edit
-    if (onGrievanceSubmitted) {
-      onGrievanceSubmitted({
-        ...formData,
-        photos,
-      });
-    }
-    // Reset form only for add mode
-    if (!isEditMode) {
-      setFormData({
-        category: "",
-        department: departments[0]?._id || "",
-        description: "",
-        address: "",
-      });
-      setPhotos([]);
-      setPreviews([]);
-    }
     setError("");
+    setMessage("");
+    try {
+      // If a parent handler is provided (edit mode/dialog), use it
+      if (onGrievanceSubmitted) {
+        onGrievanceSubmitted({
+          ...formData,
+          photos,
+        });
+      } else {
+        // Otherwise, handle API call directly (add mode)
+        const form = new FormData();
+        form.append("category", formData.category);
+        form.append("department", formData.department);
+        form.append("description", formData.description);
+        form.append("address", formData.address);
+        if (photos && photos.length > 0) {
+          form.append("photos", photos[0]);
+        }
+        console.log('Submitting grievance with token:', token);
+        const response = await fetch("/api/grievances", {
+          method: "POST",
+          headers: {
+            'x-auth-token': token,
+          },
+          body: form,
+        });
+        if (!response.ok) {
+          throw new Error("Failed to submit grievance");
+        }
+        setMessage("Grievance submitted successfully!");
+        // Optionally reset form
+        setFormData({
+          category: "",
+          department: departments[0]?._id || "",
+          description: "",
+          address: "",
+        });
+        setPhotos([]);
+        setPreviews([]);
+      }
+    } catch (err) {
+      setError(err.message || "Error submitting grievance");
+    }
   };
 
   return (
@@ -141,6 +166,12 @@ const GrievanceForm = ({ onGrievanceSubmitted, initialData, isEditMode, grievanc
         <div className="mb-3">
           <label className="form-label">Photos</label>
           <input type="file" name="photos" onChange={onFileChange} accept="image/*" className="form-control" />
+          {/* Show image name if in edit mode and image exists */}
+          {isEditMode && initialData?.photos && initialData.photos.length > 0 && (
+            <div className="mt-1 text-secondary" style={{ fontSize: '0.95em' }}>
+              <em>Current file: {initialData.photos[0]?.name || initialData.photos[0]?.url?.split("/").pop()}</em>
+            </div>
+          )}
           <div className="d-flex gap-2 mt-2 flex-wrap">
             {previews.length === 0 && <div className="text-muted">No photos attached</div>}
             {previews.map((src, i) =>
@@ -177,9 +208,14 @@ const GrievanceForm = ({ onGrievanceSubmitted, initialData, isEditMode, grievanc
           style={{ background: "rgba(0,0,0,0.5)" }}
           onClick={() => setDialogImg(null)}
         >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content p-2">
-              <img src={dialogImg} alt="full" className="img-fluid rounded" />
+          <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: 600 }}>
+            <div className="modal-content p-2" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <img
+                src={dialogImg}
+                alt="full"
+                className="img-fluid rounded"
+                style={{ maxWidth: '90vw', maxHeight: '80vh', width: 'auto', height: 'auto', objectFit: 'contain' }}
+              />
             </div>
           </div>
         </div>

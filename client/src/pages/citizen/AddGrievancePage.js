@@ -16,7 +16,6 @@ const AddGrievancePage = () => {
   return (
     <div className="container py-4">
       <div className="card p-4 shadow mx-auto" style={{ maxWidth: 600 }}>
-        <h1 className="mb-4">Submit a New Grievance</h1>
         <GrievanceForm />
       </div>
     </div>
